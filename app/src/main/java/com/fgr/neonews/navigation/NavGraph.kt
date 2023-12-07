@@ -8,6 +8,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.fgr.neonews.ui.screen.base.BaseScreen
 import com.fgr.neonews.ui.screen.detail_news.DetailNewsScreen
+import com.fgr.neonews.ui.screen.more_news.MoreNewsScreen
 
 @Composable
 fun NavGraph(
@@ -22,6 +23,17 @@ fun NavGraph(
             route = NavRoute.BaseScreen.route
         ) {
             BaseScreen(navHostController = navHostController)
+        }
+        composable(
+            route = NavRoute.MoreNewsScreen.route,
+            arguments = listOf(
+                navArgument(A_ARGS_KEY) {
+                    type = NavType.StringType
+                }
+            )
+        ) {
+            val getA = it.arguments?.getString(A_ARGS_KEY) ?: ""
+            MoreNewsScreen(navHostController ,getA)
         }
         composable(
             route = NavRoute.DetailScreen.route,

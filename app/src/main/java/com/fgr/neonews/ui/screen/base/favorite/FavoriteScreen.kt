@@ -1,4 +1,4 @@
-package com.fgr.neonews.ui.screen.favorite
+package com.fgr.neonews.ui.screen.base.favorite
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable

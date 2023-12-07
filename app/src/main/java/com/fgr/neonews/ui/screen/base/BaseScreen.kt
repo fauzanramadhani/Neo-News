@@ -33,8 +33,8 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.fgr.neonews.R
-import com.fgr.neonews.ui.screen.favorite.FavoriteScreen
-import com.fgr.neonews.ui.screen.home.HomeScreen
+import com.fgr.neonews.ui.screen.base.favorite.FavoriteScreen
+import com.fgr.neonews.ui.screen.base.home.HomeScreen
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

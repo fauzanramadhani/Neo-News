@@ -1,4 +1,4 @@
-package com.fgr.neonews.ui.screen.home
+package com.fgr.neonews.ui.screen.base.home
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -28,10 +28,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.fgr.neonews.NewsCategories
 import com.fgr.neonews.R
 import com.fgr.neonews.component.button.ButtonTextIcon
 import com.fgr.neonews.component.item.NewsItemSmall
 import com.fgr.neonews.component.navbar.NavBarPrimary
+import com.fgr.neonews.navigation.NavRoute
 import com.fgr.neonews.ui.theme.NeoNewsTheme
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -78,7 +80,13 @@ fun HomeScreen(
                     )
                 }
             ) {
-                // TODO
+                navHostController.navigate(
+                    NavRoute
+                        .MoreNewsScreen
+                        .navigateWithCategories(NewsCategories.Local)
+                ) {
+                    launchSingleTop = true
+                }
             }
         }
         LazyRow(
@@ -120,7 +128,13 @@ fun HomeScreen(
                     )
                 }
             ) {
-                // TODO
+                navHostController.navigate(
+                    NavRoute
+                        .MoreNewsScreen
+                        .navigateWithCategories(NewsCategories.Abroad)
+                ) {
+                    launchSingleTop = true
+                }
             }
         }
         LazyRow(
@@ -162,7 +176,13 @@ fun HomeScreen(
                     )
                 }
             ) {
-                // TODO
+                navHostController.navigate(
+                    NavRoute
+                        .MoreNewsScreen
+                        .navigateWithCategories(NewsCategories.PalestineWar)
+                ) {
+                    launchSingleTop = true
+                }
             }
         }
         LazyRow(
@@ -204,7 +224,13 @@ fun HomeScreen(
                     )
                 }
             ) {
-                // TODO
+                navHostController.navigate(
+                    NavRoute
+                        .MoreNewsScreen
+                        .navigateWithCategories(NewsCategories.Sport)
+                ) {
+                    launchSingleTop = true
+                }
             }
         }
         LazyRow(
