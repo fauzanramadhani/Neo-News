@@ -52,10 +52,10 @@ fun NewsItemSmall(
                     .fillMaxWidth()
                     .fillMaxHeight(0.6f)
             ) {
-                it.error("https://img.freepik.com/premium-vector/colorful-winter-cartoon-anime-error-404-page-found_150972-721.jpg")
+                it.error("https://career.astra.co.id/static/media/image_not_available1.94c0c57d.png")
             }
             Text(
-                text = title.truncate(58),
+                text = title.truncate(50),
                 style = typography.labelSmall,
                 color = colorScheme.onPrimaryContainer,
                 modifier = Modifier

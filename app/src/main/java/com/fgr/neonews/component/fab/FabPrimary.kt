@@ -13,13 +13,12 @@ fun FabPrimary(
 ) {
     FloatingActionButton(
         onClick = onClick,
-        containerColor = colorScheme.primary,
-        contentColor = colorScheme.onBackground,
+        containerColor = colorScheme.surface,
+        contentColor = colorScheme.surfaceTint,
     ) {
         Icon(
             painter = painterResource(id = icon),
             contentDescription = null,
-            tint = colorScheme.surfaceTint,
         )
     }
 }

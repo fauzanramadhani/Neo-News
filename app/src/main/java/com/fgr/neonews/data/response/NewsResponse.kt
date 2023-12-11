@@ -1,51 +1,51 @@
-package com.fgr.neonews.data.model
+package com.fgr.neonews.data.response
 
 import com.google.gson.annotations.SerializedName
 
 data class NewsResponse(
 
 	@field:SerializedName("totalResults")
-	val totalResults: Int,
+	val totalResults: Int? = null,
 
 	@field:SerializedName("articles")
-	val articles: List<ArticlesItem>,
+	val articles: List<ArticlesItem>? = null,
 
 	@field:SerializedName("status")
-	val status: String
+	val status: String? = null,
 )
 
 data class ArticlesItem(
 
 	@field:SerializedName("publishedAt")
-	val publishedAt: String,
+	val publishedAt: String? = null,
 
 	@field:SerializedName("author")
-	val author: String,
+	val author: String? = null,
 
 	@field:SerializedName("urlToImage")
-	val urlToImage: String?,
+	val urlToImage: String? = null,
 
 	@field:SerializedName("description")
-	val description: String?,
+	val description: String? = null,
 
 	@field:SerializedName("source")
-	val source: Source,
+	val source: Source? = null,
 
 	@field:SerializedName("title")
-	val title: String,
+	val title: String? = null,
 
 	@field:SerializedName("url")
-	val url: String,
+	val url: String? = null,
 
 	@field:SerializedName("content")
-	val content: String?
+	val content: String? = null,
 )
 
 data class Source(
 
 	@field:SerializedName("name")
-	val name: String,
+	val name: String? = null,
 
 	@field:SerializedName("id")
-	val id: String
+	val id: String? = null,
 )

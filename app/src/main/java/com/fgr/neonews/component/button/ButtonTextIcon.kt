@@ -13,6 +13,7 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun ButtonTextIcon(
+    modifier: Modifier = Modifier,
     text: @Composable RowScope.() -> Unit = {},
     icon: @Composable RowScope.() -> Unit = {},
     onClick: () -> Unit = {},
@@ -20,7 +21,7 @@ fun ButtonTextIcon(
     Row(
         horizontalArrangement = Arrangement.spacedBy(8.dp),
         verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier
+        modifier = modifier
             .clip(RoundedCornerShape(4.dp))
             .clickable(onClick = onClick)
     ) {

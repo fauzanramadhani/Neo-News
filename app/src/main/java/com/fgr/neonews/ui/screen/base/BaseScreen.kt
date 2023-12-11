@@ -1,7 +1,9 @@
 package com.fgr.neonews.ui.screen.base
 
 import android.app.Activity
+import android.os.Build
 import androidx.activity.compose.BackHandler
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -36,6 +38,7 @@ import com.fgr.neonews.R
 import com.fgr.neonews.ui.screen.base.favorite.FavoriteScreen
 import com.fgr.neonews.ui.screen.base.home.HomeScreen
 
+@RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BaseScreen(

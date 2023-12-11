@@ -1,21 +1,24 @@
 package com.fgr.neonews.data.retrofit
 
+import com.fgr.neonews.BuildConfig
 import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-object ApiConfig {
-    private fun createOkHttpClient(): OkHttpClient {
-        return OkHttpClient.Builder().build()
-    }
+fun createRetrofit(
+    baseUrl: String = BuildConfig.BASE_URL,
+): Retrofit {
 
-    private fun createRetrofit(baseUrl: String): Retrofit {
-        return Retrofit.Builder()
-            .baseUrl(baseUrl)
-            .addConverterFactory(GsonConverterFactory.create())
-            .client(createOkHttpClient())
-            .build()
-    }
+    val createOkHttp = OkHttpClient.Builder()
+        .addInterceptor(HttpLoggingInterceptor().apply {
+            level = HttpLoggingInterceptor.Level.BODY
+        })
+        .build()
 
-    fun apiService(baseUrl: String): ApiService = createRetrofit(baseUrl).create(ApiService::class.java)
+    return Retrofit.Builder()
+        .baseUrl(baseUrl)
+        .addConverterFactory(GsonConverterFactory.create())
+        .client(createOkHttp)
+        .build()
 }

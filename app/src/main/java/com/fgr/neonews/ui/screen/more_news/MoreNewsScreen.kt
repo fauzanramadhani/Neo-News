@@ -2,6 +2,7 @@ package com.fgr.neonews.ui.screen.more_news
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -15,6 +16,7 @@ import androidx.navigation.compose.rememberNavController
 import com.fgr.neonews.NewsCategories
 import com.fgr.neonews.component.item.NewsItemLarge
 import com.fgr.neonews.component.navbar.NavBarSecondary
+import com.fgr.neonews.navigation.NavRoute
 import com.fgr.neonews.ui.theme.NeoNewsTheme
 
 @Composable
@@ -41,8 +43,11 @@ fun MoreNewsScreen(
                 modifier = Modifier
                     .padding(horizontal = 12.dp)
             ) {
-                // TODO: On Item Clicked
+                navHostController.navigate(NavRoute.DetailScreen.navigateWithId("a"))
             }
+        }
+        item {
+            Spacer(modifier = Modifier.padding(bottom = 12.dp))
         }
     }
 }
