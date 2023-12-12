@@ -1,22 +1,22 @@
 package com.fgr.neonews.repository
 
 import android.app.Application
-import android.os.Build
 import android.util.Log
-import androidx.annotation.RequiresApi
-import com.fgr.neonews.data.listener.ApiListener
+import com.fgr.neonews.data.listener.CallbackListener
 import com.fgr.neonews.data.remote.NewsApi
 import com.fgr.neonews.data.response.ArticlesItem
+import com.fgr.neonews.data.room.dao.NewsDao
+import com.fgr.neonews.data.room.table.NewsTable
 import javax.inject.Inject
 
-@RequiresApi(Build.VERSION_CODES.O)
 class NewsRepository @Inject constructor(
     private val appContext: Application,
     private val newsApi: NewsApi,
     private val apiKey: String,
+    private val newsDao: NewsDao,
 ) {
     suspend fun getLocalNews(
-        apiListener: ApiListener<List<ArticlesItem>>,
+        callbackListener: CallbackListener<List<ArticlesItem>>,
         pageSize: Int = 5,
     ) {
         try {
@@ -26,20 +26,20 @@ class NewsRepository @Inject constructor(
                 pageSize = pageSize
             )
             if (result.status == "ok") {
-                apiListener.onSuccess(result.articles ?: listOf())
+                callbackListener.onSuccess(result.articles ?: listOf())
             } else {
                 // if status is 401 = Invalid API Key
-                apiListener.onFailure("Api Key Invalid or Limited")
+                callbackListener.onFailure("Api Key Invalid or Limited")
 
             }
         } catch (e: Exception) {
-            apiListener.onFailure(e.message.toString())
+            callbackListener.onFailure(e.message.toString())
             Log.e("LocalNews", e.message.toString())
         }
     }
 
     suspend fun getAbroadNews(
-        apiListener: ApiListener<List<ArticlesItem>>,
+        callbackListener: CallbackListener<List<ArticlesItem>>,
         pageSize: Int = 5,
     ) {
         try {
@@ -49,19 +49,19 @@ class NewsRepository @Inject constructor(
                 pageSize = pageSize
             )
             if (result.status == "ok") {
-                apiListener.onSuccess(result.articles ?: listOf())
+                callbackListener.onSuccess(result.articles ?: listOf())
             } else {
                 // if status is 401 = Invalid API Key
-                apiListener.onFailure("Api Key Invalid or Limited")
+                callbackListener.onFailure("Api Key Invalid or Limited")
 
             }
         } catch (e: Exception) {
-            apiListener.onFailure(e.message.toString())
+            callbackListener.onFailure(e.message.toString())
         }
     }
 
     suspend fun getPalestineNews(
-        apiListener: ApiListener<List<ArticlesItem>>,
+        callbackListener: CallbackListener<List<ArticlesItem>>,
         pageSize: Int = 5,
     ) {
         try {
@@ -72,19 +72,19 @@ class NewsRepository @Inject constructor(
                 apiKey = apiKey,
             )
             if (result.status == "ok") {
-                apiListener.onSuccess(result.articles ?: listOf())
+                callbackListener.onSuccess(result.articles ?: listOf())
             } else {
                 // if status is 401 = Invalid API Key
-                apiListener.onFailure("Api Key Invalid or Limited")
+                callbackListener.onFailure("Api Key Invalid or Limited")
 
             }
         } catch (e: Exception) {
-            apiListener.onFailure(e.message.toString())
+            callbackListener.onFailure(e.message.toString())
         }
     }
 
     suspend fun getSportNews(
-        apiListener: ApiListener<List<ArticlesItem>>,
+        callbackListener: CallbackListener<List<ArticlesItem>>,
         pageSize: Int = 5,
     ) {
         try {
@@ -95,15 +95,32 @@ class NewsRepository @Inject constructor(
                 pageSize = pageSize,
             )
             if (result.status == "ok") {
-                apiListener.onSuccess(result.articles ?: listOf())
+                callbackListener.onSuccess(result.articles ?: listOf())
             } else {
                 // if status is 401 = Invalid API Key
-                apiListener.onFailure("Api Key Invalid or Limited")
+                callbackListener.onFailure("Api Key Invalid or Limited")
 
             }
         } catch (e: Exception) {
-            apiListener.onFailure(e.message.toString())
+            callbackListener.onFailure(e.message.toString())
         }
     }
+
+    suspend fun insertFavorite(
+        news: NewsTable,
+    ) = newsDao.insertFavorite(news)
+
+    suspend fun isFavorite(
+        id: Int,
+    ) = newsDao.isFavorite(id)
+
+    suspend fun getAllFavorite(
+    ) = newsDao.getAllFavorite()
+
+    suspend fun deleteAllFavorite() = newsDao.deleteAllFavorite()
+
+    suspend fun deleteFavoriteById(
+        id: Int,
+    ) = newsDao.deleteFavoriteById(id)
 }
 

@@ -47,10 +47,14 @@ fun DetailNewsScreen(
         topBar = {
             NavBarSecondary(
                 title = "Detail Berita"
-            )
+            ) {
+                navHostController.navigateUp()
+            }
         },
         floatingActionButton = {
             FabPrimary(
+                modifier = Modifier
+                    .padding(bottom = 24.dp),
                 icon = if (isFavorite) {
                     R.drawable.ic_star
                 } else {

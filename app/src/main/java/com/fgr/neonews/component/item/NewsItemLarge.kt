@@ -51,7 +51,7 @@ fun NewsItemLarge(
                     .fillMaxWidth(0.3f)
                     .fillMaxHeight()
             ) {
-                it.error("https://img.freepik.com/premium-vector/colorful-winter-cartoon-anime-error-404-page-found_150972-721.jpg")
+                it.error("https://career.astra.co.id/static/media/image_not_available1.94c0c57d.png")
             }
             Text(
                 text = title.truncate(224),

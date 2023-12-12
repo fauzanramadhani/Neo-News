@@ -1,7 +1,5 @@
 package com.fgr.neonews.navigation
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
@@ -12,7 +10,6 @@ import com.fgr.neonews.ui.screen.base.BaseScreen
 import com.fgr.neonews.ui.screen.detail_news.DetailNewsScreen
 import com.fgr.neonews.ui.screen.more_news.MoreNewsScreen
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun NavGraph(
     navHostController: NavHostController
@@ -36,7 +33,7 @@ fun NavGraph(
             )
         ) {
             val getA = it.arguments?.getString(A_ARGS_KEY) ?: ""
-            MoreNewsScreen(navHostController ,getA)
+            MoreNewsScreen(navHostController, getA)
         }
         composable(
             route = NavRoute.DetailScreen.route,
@@ -47,7 +44,7 @@ fun NavGraph(
             )
         ) {
             val getA = it.arguments?.getString(A_ARGS_KEY)
-            DetailNewsScreen(navHostController ,getA)
+            DetailNewsScreen(navHostController, getA)
         }
     }
 }

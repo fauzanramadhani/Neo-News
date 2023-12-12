@@ -5,6 +5,7 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import com.fgr.neonews.data.remote.NewsApi
 import com.fgr.neonews.data.retrofit.createRetrofit
+import com.fgr.neonews.data.room.AppDatabase
 import com.fgr.neonews.hilt.qualifier.ApiKey
 import com.fgr.neonews.repository.NewsRepository
 import dagger.Module
@@ -26,5 +27,6 @@ object AppModule {
         appContext = appContext,
         newsApi = createRetrofit().create(NewsApi::class.java),
         apiKey = apiKey,
+        newsDao = AppDatabase.getInstance(appContext).newsDao()
     )
 }

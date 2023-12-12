@@ -5,7 +5,7 @@ import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.fgr.neonews.UiState
-import com.fgr.neonews.data.listener.ApiListener
+import com.fgr.neonews.data.listener.CallbackListener
 import com.fgr.neonews.data.response.ArticlesItem
 import com.fgr.neonews.repository.NewsRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -57,7 +57,7 @@ class HomeViewModel
     suspend fun getLocalNews() {
         _localNewsState.tryEmit(UiState.Loading)
         newsRepository.getLocalNews(
-            apiListener = object : ApiListener<List<ArticlesItem>> {
+            callbackListener = object : CallbackListener<List<ArticlesItem>> {
                 override fun onSuccess(data: List<ArticlesItem>) {
                     _localNewsState.tryEmit(UiState.Success(data))
                 }
@@ -72,7 +72,7 @@ class HomeViewModel
     suspend fun getAboardNews() {
         _aboardNewsState.tryEmit(UiState.Loading)
         newsRepository.getAbroadNews(
-            apiListener = object : ApiListener<List<ArticlesItem>> {
+            callbackListener = object : CallbackListener<List<ArticlesItem>> {
                 override fun onSuccess(data: List<ArticlesItem>) {
                     _aboardNewsState.tryEmit(UiState.Success(data))
                 }
@@ -88,7 +88,7 @@ class HomeViewModel
     suspend fun getPalestineNews() {
         _palestineNewsState.tryEmit(UiState.Loading)
         newsRepository.getPalestineNews(
-            apiListener = object : ApiListener<List<ArticlesItem>> {
+            callbackListener = object : CallbackListener<List<ArticlesItem>> {
                 override fun onSuccess(data: List<ArticlesItem>) {
                     _palestineNewsState.tryEmit(UiState.Success(data))
                 }
@@ -103,7 +103,7 @@ class HomeViewModel
     suspend fun getSportNews() {
         _sportNewsState.tryEmit(UiState.Loading)
         newsRepository.getSportNews(
-            apiListener = object : ApiListener<List<ArticlesItem>> {
+            callbackListener = object : CallbackListener<List<ArticlesItem>> {
                 override fun onSuccess(data: List<ArticlesItem>) {
                     _sportNewsState.tryEmit(UiState.Success(data))
                 }
