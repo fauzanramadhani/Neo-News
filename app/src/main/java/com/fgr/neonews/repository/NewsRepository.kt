@@ -89,7 +89,7 @@ class NewsRepository @Inject constructor(
     ) {
         try {
             val result = newsApi.getHeadlines(
-                country = "id",
+                country = "us",
                 category = "sport",
                 apiKey = apiKey,
                 pageSize = pageSize,
@@ -111,16 +111,16 @@ class NewsRepository @Inject constructor(
     ) = newsDao.insertFavorite(news)
 
     suspend fun isFavorite(
-        id: Int,
+        id: Long,
     ) = newsDao.isFavorite(id)
 
-    suspend fun getAllFavorite(
+    fun getAllFavorite(
     ) = newsDao.getAllFavorite()
 
     suspend fun deleteAllFavorite() = newsDao.deleteAllFavorite()
 
     suspend fun deleteFavoriteById(
-        id: Int,
+        id: Long,
     ) = newsDao.deleteFavoriteById(id)
 }
 

@@ -5,6 +5,7 @@ const val B_ARGS_KEY = "b"
 const val C_ARGS_KEY = "c"
 const val D_ARGS_KEY = "d"
 const val E_ARGS_KEY = "e"
+const val F_ARGS_KEY = "F"
 
 sealed class NavRoute (val route: String) {
     object ROOT: NavRoute(route = "root")
@@ -16,11 +17,16 @@ sealed class NavRoute (val route: String) {
             return "more_news_screen/$categories"
         }
     }
-    object DetailScreen: NavRoute(route = "detail_screen/{$A_ARGS_KEY}") {
-        fun navigateWithId(
-            id: String
+    object DetailScreen: NavRoute(route = "detail_screen/{$A_ARGS_KEY}/{$B_ARGS_KEY}/{$C_ARGS_KEY}/{$D_ARGS_KEY}/{$E_ARGS_KEY}/{$F_ARGS_KEY}") {
+        fun navigateWithData(
+            dateTime: String,
+            title: String,
+            source: String,
+            imageUrl: String,
+            description: String,
+            newsUrl: String,
         ): String {
-            return "detail_screen/$id"
+            return "detail_screen/$dateTime/$title/$source/$imageUrl/$description/$newsUrl"
         }
     }
 }

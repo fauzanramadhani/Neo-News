@@ -1,7 +1,5 @@
-package com.fgr.neonews.ui.screen.base.home
+package com.fgr.neonews.ui.screen.home
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.fgr.neonews.UiState
@@ -14,7 +12,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-@RequiresApi(Build.VERSION_CODES.O)
 @HiltViewModel
 class HomeViewModel
 @Inject constructor(
@@ -69,6 +66,7 @@ class HomeViewModel
             }
         )
     }
+
     suspend fun getAboardNews() {
         _aboardNewsState.tryEmit(UiState.Loading)
         newsRepository.getAbroadNews(
@@ -84,7 +82,7 @@ class HomeViewModel
             }
         )
     }
-    @RequiresApi(Build.VERSION_CODES.O)
+
     suspend fun getPalestineNews() {
         _palestineNewsState.tryEmit(UiState.Loading)
         newsRepository.getPalestineNews(
@@ -100,6 +98,7 @@ class HomeViewModel
             }
         )
     }
+
     suspend fun getSportNews() {
         _sportNewsState.tryEmit(UiState.Loading)
         newsRepository.getSportNews(

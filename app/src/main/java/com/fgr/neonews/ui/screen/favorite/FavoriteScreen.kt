@@ -1,11 +1,10 @@
-package com.fgr.neonews.ui.screen.more_news
+package com.fgr.neonews.ui.screen.favorite
 
 import android.net.Uri
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -19,40 +18,35 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.MutableIntState
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
-import com.fgr.neonews.NewsCategories
 import com.fgr.neonews.UiState
 import com.fgr.neonews.component.button.ButtonTextIcon
 import com.fgr.neonews.component.item.NewsItemLarge
 import com.fgr.neonews.component.loading.SkeletonLoading
-import com.fgr.neonews.component.navbar.NavBarSecondary
+import com.fgr.neonews.component.navbar.NavBarPrimary
 import com.fgr.neonews.isoToMills
 import com.fgr.neonews.navigation.NavRoute
 import com.fgr.neonews.truncate
-import com.fgr.neonews.ui.theme.NeoNewsTheme
 import kotlinx.coroutines.launch
 
 @Composable
-fun MoreNewsScreen(
+fun FavoriteScreen(
     navHostController: NavHostController,
-    newsCategories: String?,
-    moreNewsViewModel: MoreNewsViewModel = hiltViewModel(),
+    myPaddingValues: PaddingValues,
+    contentRoute: MutableIntState,
+    favoriteViewModel: FavoriteViewModel = hiltViewModel()
 ) {
-    LaunchedEffect(moreNewsViewModel) {
-        moreNewsViewModel.getNews(newsCategories ?: NewsCategories.Local)
-    }
     val scope = rememberCoroutineScope()
-    val newsState by moreNewsViewModel.newsState.collectAsState()
+    val favoriteNewsState by favoriteViewModel.favoriteNewsState.collectAsState()
+
     LazyColumn(
         verticalArrangement = Arrangement.spacedBy(24.dp),
         modifier = Modifier
@@ -60,17 +54,10 @@ fun MoreNewsScreen(
             .background(MaterialTheme.colorScheme.background)
     ) {
         item {
-            NavBarSecondary(
-                title = newsCategories ?: NewsCategories.Local
-            ) {
-                navHostController.navigateUp()
-            }
+            NavBarPrimary()
         }
-        when (val currentState = newsState) {
-            UiState.Empty -> {
-                // Nothing
-            }
-
+        when (val currentState = favoriteNewsState) {
+            UiState.Empty -> {}
             is UiState.Error -> {
                 item {
                     Column(
@@ -102,9 +89,7 @@ fun MoreNewsScreen(
                             },
                             onClick = {
                                 scope.launch {
-                                    moreNewsViewModel.getNews(
-                                        newsCategories ?: NewsCategories.Local
-                                    )
+                                    favoriteViewModel.getFavoriteNews()
                                 }
                             }
                         )
@@ -124,21 +109,21 @@ fun MoreNewsScreen(
             }
 
             is UiState.Success -> {
-                items(currentState.data) { article ->
+                items(currentState.data) { favoriteNews ->
                     NewsItemLarge(
-                        imageUrl = article.urlToImage ?: "",
-                        title = article.title ?: "",
+                        title = favoriteNews.title,
+                        imageUrl = favoriteNews.imageUrl,
                         modifier = Modifier
                             .padding(horizontal = 12.dp)
                     ) {
                         navHostController.navigate(
                             NavRoute.DetailScreen.navigateWithData(
-                                dateTime = article.publishedAt?.isoToMills().toString(),
-                                title = article.title ?: "empty",
-                                source = article.source?.name ?: "empty",
-                                imageUrl = Uri.encode(article.urlToImage ?: "empty"),
-                                description = article.description ?: "Empty Description",
-                                newsUrl = Uri.encode(article.url?: "empty")
+                                dateTime = favoriteNews.publishedAt.isoToMills().toString(),
+                                title = favoriteNews.title,
+                                source = favoriteNews.source,
+                                imageUrl = Uri.encode(favoriteNews.imageUrl),
+                                description = favoriteNews.description,
+                                newsUrl = Uri.encode(favoriteNews.newsUrl)
                             )
                         )
                     }
@@ -146,16 +131,7 @@ fun MoreNewsScreen(
             }
         }
         item {
-            Spacer(modifier = Modifier.padding(bottom = 12.dp))
+            Spacer(modifier = Modifier.padding(bottom = myPaddingValues.calculateBottomPadding() + 12.dp))
         }
-    }
-}
-
-@RequiresApi(Build.VERSION_CODES.O)
-@Preview
-@Composable
-fun MoreNewsScreenPreview() {
-    NeoNewsTheme {
-        MoreNewsScreen(rememberNavController(), null)
     }
 }

@@ -1,6 +1,7 @@
-package com.fgr.neonews.ui.screen.base.home
+package com.fgr.neonews.ui.screen.home
 
 import android.annotation.SuppressLint
+import android.net.Uri
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
@@ -47,12 +48,12 @@ import com.fgr.neonews.component.button.ButtonTextIcon
 import com.fgr.neonews.component.item.NewsItemSmall
 import com.fgr.neonews.component.loading.SkeletonLoading
 import com.fgr.neonews.component.navbar.NavBarPrimary
+import com.fgr.neonews.isoToMills
 import com.fgr.neonews.navigation.NavRoute
 import com.fgr.neonews.truncate
 import com.fgr.neonews.ui.theme.NeoNewsTheme
 import kotlinx.coroutines.launch
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun HomeScreen(
     navHostController: NavHostController,
@@ -173,7 +174,16 @@ fun HomeScreen(
                             imageUrl = article.urlToImage ?: "",
                             title = article.title ?: "",
                         ) {
-                            navHostController.navigate(NavRoute.DetailScreen.navigateWithId("a"))
+                            navHostController.navigate(
+                                NavRoute.DetailScreen.navigateWithData(
+                                    dateTime = article.publishedAt?.isoToMills().toString(),
+                                    title = article.title ?: "empty",
+                                    source = article.source?.name ?: "empty",
+                                    imageUrl = Uri.encode(article.urlToImage ?: "empty"),
+                                    description = article.description ?: "Empty Description",
+                                    newsUrl = Uri.encode(article.url ?: "empty")
+                                )
+                            )
                         }
                     }
                 }
@@ -281,7 +291,16 @@ fun HomeScreen(
                             imageUrl = article.urlToImage ?: "",
                             title = article.title ?: "",
                         ) {
-                            navHostController.navigate(NavRoute.DetailScreen.navigateWithId("a"))
+                            navHostController.navigate(
+                                NavRoute.DetailScreen.navigateWithData(
+                                    dateTime = article.publishedAt?.isoToMills().toString(),
+                                    title = article.title ?: "empty",
+                                    source = article.source?.name ?: "empty",
+                                    imageUrl = Uri.encode(article.urlToImage ?: "empty"),
+                                    description = article.description ?: "Empty Description",
+                                    newsUrl = Uri.encode(article.url ?: "empty")
+                                )
+                            )
                         }
                     }
                 }
@@ -389,7 +408,16 @@ fun HomeScreen(
                             imageUrl = article.urlToImage ?: "",
                             title = article.title ?: "",
                         ) {
-                            navHostController.navigate(NavRoute.DetailScreen.navigateWithId("a"))
+                            navHostController.navigate(
+                                NavRoute.DetailScreen.navigateWithData(
+                                    dateTime = article.publishedAt?.isoToMills().toString(),
+                                    title = article.title ?: "empty",
+                                    source = article.source?.name ?: "empty",
+                                    imageUrl = Uri.encode(article.urlToImage ?: "empty"),
+                                    description = article.description ?: "Empty Description",
+                                    newsUrl = Uri.encode(article.url ?: "empty")
+                                )
+                            )
                         }
                     }
                 }
@@ -497,7 +525,16 @@ fun HomeScreen(
                             imageUrl = article.urlToImage ?: "",
                             title = article.title ?: "",
                         ) {
-                            navHostController.navigate(NavRoute.DetailScreen.navigateWithId("a"))
+                            navHostController.navigate(
+                                NavRoute.DetailScreen.navigateWithData(
+                                    dateTime = article.publishedAt?.isoToMills().toString(),
+                                    title = article.title ?: "empty",
+                                    source = article.source?.name ?: "empty",
+                                    imageUrl = Uri.encode(article.urlToImage ?: "empty"),
+                                    description = article.description ?: "Empty Description",
+                                    newsUrl = Uri.encode(article.url ?: "empty")
+                                )
+                            )
                         }
                     }
                 }

@@ -1,5 +1,8 @@
 package com.fgr.neonews.ui.screen.detail_news
 
+import android.content.Intent
+import android.net.Uri
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -15,34 +18,67 @@ import androidx.compose.material3.MaterialTheme.typography
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.fgr.neonews.R
+import com.fgr.neonews.UiState
 import com.fgr.neonews.component.button.ButtonTextIcon
 import com.fgr.neonews.component.fab.FabPrimary
 import com.fgr.neonews.component.navbar.NavBarSecondary
+import com.fgr.neonews.data.room.table.NewsTable
+import com.fgr.neonews.formatMills
+import com.fgr.neonews.millsToIso
 import com.fgr.neonews.ui.theme.NeoNewsTheme
 
 @OptIn(ExperimentalGlideComposeApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun DetailNewsScreen(
     navHostController: NavHostController,
-    id: String? = null,
+    dateTime: String,
+    title: String,
+    source: String,
+    imageUrl: String,
+    description: String,
+    newsUrl: String,
+    detailNewsViewModel: DetailNewsViewModel = hiltViewModel(),
 ) {
+    val context = LocalContext.current
     var isFavorite by rememberSaveable {
         mutableStateOf(false)
     }
+    LaunchedEffect(detailNewsViewModel) {
+        detailNewsViewModel.isFavorite(dateTime.toLong()) // Using date time (time stamp) for id
+    }
+    val isFavoriteState by detailNewsViewModel.isFavorite.collectAsState()
+    LaunchedEffect(isFavoriteState) {
+        when (val currentState = isFavoriteState) {
+            UiState.Empty -> {}
+            is UiState.Error -> {
+                Toast.makeText(context, currentState.errorMessage, Toast.LENGTH_LONG).show()
+            }
+
+            UiState.Loading -> {}
+            is UiState.Success -> {
+                isFavorite = currentState.data
+            }
+        }
+    }
+
     Scaffold(
         topBar = {
             NavBarSecondary(
@@ -54,14 +90,40 @@ fun DetailNewsScreen(
         floatingActionButton = {
             FabPrimary(
                 modifier = Modifier
-                    .padding(bottom = 24.dp),
+                    .padding(bottom = 24.dp, end = 12.dp),
                 icon = if (isFavorite) {
                     R.drawable.ic_star
                 } else {
                     R.drawable.ic_start_outlined
                 }
             ) {
-                isFavorite = !isFavorite
+                val currentNews = NewsTable(
+                    id = dateTime.toLong(),
+                    title = title,
+                    source = source,
+                    imageUrl = imageUrl,
+                    newsUrl = newsUrl,
+                    description = description,
+                    publishedAt = dateTime.toLong().millsToIso(),
+                    createdAt = dateTime.toLong(),
+                )
+                if (isFavorite) {
+                    detailNewsViewModel.deleteFavorite(
+                        id = currentNews.id,
+                        callback = { success, message ->
+                            if (success) detailNewsViewModel.isFavorite(currentNews.id)
+                            else Toast.makeText(context, message, Toast.LENGTH_LONG).show()
+                        }
+                    )
+                } else {
+                    detailNewsViewModel.insertFavorite(
+                        news = currentNews,
+                        callback = { success, message ->
+                            if (success) detailNewsViewModel.isFavorite(currentNews.id)
+                            else Toast.makeText(context, message, Toast.LENGTH_LONG).show()
+                        }
+                    )
+                }
             }
         }
     ) { paddingValues ->
@@ -78,34 +140,32 @@ fun DetailNewsScreen(
                 )
         ) {
             Text(
-                text = "Sabtu, 14 Oktober 2023",
+                text = dateTime.toLong().formatMills("EEEE, dd MMMM yyyy"),
                 style = typography.bodySmall,
                 color = colorScheme.onSurfaceVariant
             )
             Text(
-                text = "Kali Pertama Berdiri Satu Panggung, Fuji Ungkap Rasa Kagum Terhadap Lesti Kejora",
+                text = title,
                 style = typography.titleLarge,
                 color = colorScheme.onBackground
             )
             Text(
-                text = "CNN Indonesia",
+                text = source,
                 style = typography.labelMedium,
                 color = colorScheme.onSurfaceVariant
             )
             GlideImage(
-                model = "https://static.promediateknologi.id/crop/0x0:0x0/0x0/webp/photo/p2/74/2023/09/29/Gojo-Satoru-1626485619.jpg",
+                model = Uri.decode(imageUrl),
                 contentDescription = null,
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(200.dp)
             ) { reqBuilder ->
-                reqBuilder.error("https://img.freepik.com/premium-vector/colorful-winter-cartoon-anime-error-404-page-found_150972-721.jpg")
+                reqBuilder.error("https://career.astra.co.id/static/media/image_not_available1.94c0c57d.png")
             }
             Text(
-                text = "" +
-                        "Ada banyak momen seru dan berbagai kehebohan yang terjadi dalam gelaran ajang penghargaan Indonesian Dangdut Awards 2023. Mulai dari gimmick panggung dari para pengisi acara hingga saling ungkap rasa kagum dari para pembaca nominasi. Itulah yang terjadi ketika Fuji dan Lesti Kejora ketika berada satu panggung untuk pertama kalinya. Diketah..." +
-                        "",
+                text = description,
                 style = typography.bodyMedium,
                 color = colorScheme.onBackground
             )
@@ -126,7 +186,8 @@ fun DetailNewsScreen(
                     )
                 }
             ) {
-                // TODO: On read full of news
+                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(Uri.decode(newsUrl)))
+                context.startActivity(intent)
             }
         }
     }
@@ -138,7 +199,12 @@ fun DetailNewsScreenPreview() {
     NeoNewsTheme {
         DetailNewsScreen(
             navHostController = rememberNavController(),
-            id = "Perang Palestina",
+            dateTime = "2023-12-11T12:14:06Z",
+            title = "Netflix users poke fun at Elon Musk's reaction to 'Leave the World Behind' Tesla scen",
+            source = "The Times of India",
+            imageUrl = "https://img.etimg.com/thumb/msid-105906213,width-1200,height-630,imgsize-46020,overlay-economictimes/photo.jpg",
+            description = "Elon Musk's criticism of a Tesla scene in Netflix's 'Leave the World Behind' stirred online banter as the post-apocalyptic thriller soared to the platform's top spot. The film, depicting a society crumbling amid technological collapse, faced mixed reviews des",
+            newsUrl = "https://www.nakedcapitalism.com/2023/12/links-12-11-2023.html"
         )
     }
 }

@@ -13,18 +13,33 @@ fun String.truncate(maxLength: Int): String {
     }
 }
 
-fun String.isoToMills(): Long {
+fun String?.isoToMills(): Long {
     val dateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.getDefault())
     dateFormat.timeZone = TimeZone.getTimeZone("UTC")
 
     try {
-        val date = dateFormat.parse(this)
+        val date = this?.let { dateFormat.parse(it) }
         return date?.time ?: 0
     } catch (e: Exception) {
         e.printStackTrace()
     }
 
     return 0
+}
+
+
+fun Long.millsToIso(): String {
+    val dateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.getDefault())
+    dateFormat.timeZone = TimeZone.getTimeZone("UTC")
+
+    try {
+        val date = Date(this)
+        return dateFormat.format(date)
+    } catch (e: Exception) {
+        e.printStackTrace()
+    }
+
+    return ""
 }
 
 fun Long.formatMills(pattern: String): String {

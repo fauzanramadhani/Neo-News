@@ -40,11 +40,39 @@ fun NavGraph(
             arguments = listOf(
                 navArgument(A_ARGS_KEY) {
                     type = NavType.StringType
+                },
+                navArgument(B_ARGS_KEY) {
+                    type = NavType.StringType
+                },
+                navArgument(C_ARGS_KEY) {
+                    type = NavType.StringType
+                },
+                navArgument(D_ARGS_KEY) {
+                    type = NavType.StringType
+                },
+                navArgument(E_ARGS_KEY) {
+                    type = NavType.StringType
+                },
+                navArgument(F_ARGS_KEY) {
+                    type = NavType.StringType
                 }
             )
         ) {
-            val getA = it.arguments?.getString(A_ARGS_KEY)
-            DetailNewsScreen(navHostController, getA)
+            val getA = it.arguments?.getString(A_ARGS_KEY) ?: "empty"
+            val getB = it.arguments?.getString(B_ARGS_KEY) ?: "empty"
+            val getC = it.arguments?.getString(C_ARGS_KEY) ?: "empty"
+            val getD = it.arguments?.getString(D_ARGS_KEY) ?: "empty"
+            val getE = it.arguments?.getString(E_ARGS_KEY) ?: "empty"
+            val getF = it.arguments?.getString(F_ARGS_KEY) ?: "empty"
+            DetailNewsScreen(
+                navHostController = navHostController,
+                dateTime = getA,
+                title = getB,
+                source = getC,
+                imageUrl = getD,
+                description = getE,
+                newsUrl = getF
+            )
         }
     }
 }
