@@ -105,7 +105,7 @@ fun DetailNewsScreen(
                     newsUrl = newsUrl,
                     description = description,
                     publishedAt = dateTime.toLong().millsToIso(),
-                    createdAt = dateTime.toLong(),
+                    createdAt = System.currentTimeMillis(),
                 )
                 if (isFavorite) {
                     detailNewsViewModel.deleteFavorite(

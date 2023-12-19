@@ -109,7 +109,7 @@ fun FavoriteScreen(
             }
 
             is UiState.Success -> {
-                items(currentState.data) { favoriteNews ->
+                items(currentState.data.sortedByDescending { it.createdAt }) { favoriteNews ->
                     NewsItemLarge(
                         title = favoriteNews.title,
                         imageUrl = favoriteNews.imageUrl,
